@@ -1,5 +1,5 @@
 {
-    "language": "vi",
+    "language": "en",
     "DeveloperMode": false,
     "autoCreateDB": true,
     "iconUnsend": {
@@ -17,7 +17,6 @@
     "FACEBOOK_ADMIN": "61580256851067",
     "PREFIX": "61580256851067",
     "ADMINBOT": [
-        "61580256851067",
         "61580256851067"
     ],
     "NDH": [
