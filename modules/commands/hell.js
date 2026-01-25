@@ -3,7 +3,7 @@ module.exports.config = {
   version: "1.0.0",
   hasPermssion: 2,
   credits: "الوكيل",
-  description: "يرسل رسالة كل 30 ثانية",
+  description: "يرسل رسالة كل دقيقة",
   commandCategory: "نظام",
   usages: "[تشغيل/ايقاف] [الرسالة]",
   cooldowns: 5
@@ -47,11 +47,11 @@ module.exports.run = async function({ api, event, args }) {
 𖣔 |  ᭄ 𝙇𝙊𝙍𝘿 𝙎𝘼𝙄 🩶🪽 ʿ 𔖱۪𔖱.`;
     const finalMessage = message || defaultMessage;
 
-    api.sendMessage("تم تشغيل الجحيم! سأقوم بإرسال الرسالة كل 30 ثانية.", threadID);
+    api.sendMessage("تم تشغيل الجحيم! سأقوم بإرسال الرسالة كل دقيقة.", threadID);
     
     intervals[threadID] = setInterval(() => {
       api.sendMessage(finalMessage, threadID);
-    }, 30000);
+    }, 60000);
   } 
   else if (action === "ايقاف") {
     if (!intervals[threadID]) return api.sendMessage("الأمر غير مفعل حالياً.", threadID, messageID);
