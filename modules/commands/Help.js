@@ -62,7 +62,7 @@ module.exports. run = function({ api, event, args, getText }) {
     i = startSlice;
     const returnArray = arrayInfo.slice(startSlice, startSlice + numberOfOnePage);
 
-    for (let item of returnArray) msg += ` ⚡ ${++i}. ${prefix}${item}\n`;
+    for (let item of returnArray) msg += ` ⚡ ${++i}. ${item}\n`;
 
     const siu = `╭━━━━「 📜 قـائـمـة الأوامـر 」━━━━╮`;
     const text = `\n╰━━━━━━━━━━━━━━━━━━━━━━━╯\nالصفحة (${page}/${Math.ceil(arrayInfo.length/numberOfOnePage)})\nالمطور: 𝕃𝕆ℝ𝔻 𝕊𝔸𝕀 | 𝙇𝙊𝙍𝘿 𝙎𝘼𝙄`;
