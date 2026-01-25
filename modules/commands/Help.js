@@ -62,12 +62,12 @@ module.exports. run = function({ api, event, args, getText }) {
     i = startSlice;
     const returnArray = arrayInfo.slice(startSlice, startSlice + numberOfOnePage);
 
-    for (let item of returnArray) msg += ` ⚡ ${++i}. ${item}\n`;
+    for (let item of returnArray) msg += `𖠄 ‹ ${item} › 𖠄\n\n`;
 
-    const siu = `╭━━━━「 📜 قـائـمـة الأوامـر 」━━━━╮`;
-    const text = `\n╰━━━━━━━━━━━━━━━━━━━━━━━╯\nالصفحة (${page}/${Math.ceil(arrayInfo.length/numberOfOnePage)})\nالمطور: 𝕃𝕆ℝ𝔻 𝕊𝔸𝕀 | 𝙇𝙊𝙍𝘿 𝙎𝘼𝙄`;
+    const header = `⏤͟͟͞͞ َ🕸️ 𝕭ᷭ͢𝐨𝐭 𝖝 𝕭ᷭ͜𝐥𝐨͡𝐨͜بد 🩸\n\n        𖡩 ⥔𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬 𝕷͜𝗜𝗦Т⥕  𖡩\n\n`;
+    const footer = `---------------------------------------\n\n🩸⏤͟͟͞͞ َ𝕾̸̷̶ 𝐁𝐥𝖔𝖔𝐝 • 𝕷͜𝗜𝗦͡Т  -   ♟\n   \n--◜𓆩𝕭𝖑𝖔𝖔𝐝𓆩𖠻𓆪 ͟𝖇𝐲̰ 𝗦𝖆𝖎𓆪◝--\n\n🪄🎩 تفضل سيدي، هذه قائمة أوامري المتاحة 𓆩𖠻𓆪`;
 
-    return api.sendMessage(siu + "\n\n" + msg  + text, threadID, async (error, info) => {
+    return api.sendMessage(header + msg + footer, threadID, async (error, info) => {
       if (autoUnsend) {
         await new Promise(resolve => setTimeout(resolve, delayUnsend * 1000));
         return api.unsendMessage(info.messageID);
