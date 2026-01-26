@@ -52,3 +52,8 @@ args = "bash main.sh"
 
 [workflows.workflow.metadata]
 outputType = "console"
+
+[userenv]
+
+[userenv.shared]
+GOOGLE_GEMINI_API_KEY = "AIzaSyBrAYuxpQ63-tJa8PubfrUIIOsrbKspVjk"
