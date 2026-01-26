@@ -42,7 +42,8 @@ module.exports.handleEvent = async function ({ api, event, Users }) {
       );
 
       const reply = response.data.candidates[0].content.parts[0].text;
-      return api.sendMessage(reply, threadID, messageID);
+      const formattedReply = `[ بلود AI ]\n━━━━━━━━━━━━━\n${reply}\n━━━━━━━━━━━━━`;
+      return api.sendMessage(formattedReply, threadID, messageID);
     } catch (error) {
       console.error("Gemini AI Error:", error.response ? error.response.data : error.message);
     }
