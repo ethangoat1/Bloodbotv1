@@ -24,7 +24,10 @@ module.exports.run = async function({ api, event, args }) {
     
     const protectName = async () => {
       try {
-        await api.setTitle(botName, threadID);
+        const threadInfo = await api.getThreadInfo(threadID);
+        if (threadInfo.threadName !== botName) {
+          await api.setTitle(botName, threadID);
+        }
       } catch (e) {
         console.log("Name Protection Error:", e);
       }
