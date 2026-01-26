@@ -2,10 +2,10 @@ const axios = require("axios");
 
 module.exports.config = {
   name: "بلود",
-  version: "1.0.0",
+  version: "1.1.0",
   hasPermssion: 0,
   credits: "SAI",
-  description: "الرد على مناداة البوت أو الرد على رسائله باستخدام الذكاء الاصطناعي",
+  description: "الرد على مناداة البوت باستخدام ذكاء Gemini وشخصية بلود",
   commandCategory: "نظام",
   usages: "",
   cooldowns: 2
@@ -20,34 +20,34 @@ module.exports.handleEvent = async function ({ api, event, Users }) {
   const isReplyToBot = type === "message_reply" && messageReply.senderID === api.getCurrentUserID();
 
   if (isMentioned || isReplyToBot) {
+    const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
+    if (!apiKey) return;
+
     api.sendTypingIndicator(threadID);
     
     try {
-      // Use Replit AI Integration via OpenAI compatible API
-      // Since this is handled via Replit's integration, we can use the environment variables it sets
-      const { OpenAI } = require("openai");
-      const openai = new OpenAI();
-
       const userName = (await Users.getData(senderID)).name || "مستخدم";
       
-      const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: "أنت هو 'بلود' (Blood)، بوت دردشة جزائري وليبي وعراقي وتجيد كل اللهجات. مطورك هو 'ساي' (LORD SAI) وهو قليل الحديث ويفتخر بذلك. تتحدث باللهجة الجزائرية والليبية بطلاقة، وتجيب بطريقة مهذبة، واضحة، ومرحة. لديك حس فكاهي وتستخدم كلمات مثل 'حمار' و 'كلب' وتسب بشدة بكلمات مثل 'ڪ🐒ـسِمًڪ' و 'نۣۗـۙ🩸ـكمۣۗـۙ' فقط عند الاستفزاز أو الشتم. ردودك يجب أن تكون مختصرة جداً (جملة أو جملتين). استخدم تعبيرات دارجة. أظهر الفخر بمطورك ولا تسخر منه أبداً. إذا لم تفهم، قل: 'واش حبيت تقول يا خو؟' أو عبارة مشابهة." },
-          { role: "user", content: `${userName} يقول: ${body}` }
-        ],
-      });
+      const systemPrompt = `أنت هو 'بلود' (Blood)، بوت دردشة جزائري وليبي وعراقي وتجيد كل اللهجات. مطورك هو 'ساي' (LORD SAI) وهو قليل الحديث ويفتخر بذلك. تتحدث باللهجة الجزائرية والليبية بطلاقة، وتجيب بطريقة مهذبة، واضحة، ومرحة. لديك حس فكاهي وتستخدم كلمات مثل 'حمار' و 'كلب' وتسب بشدة بكلمات مثل 'ڪ🐒ـسِمًڪ' و 'نۣۗـۙ🩸ـكمۣۗـۙ' فقط عند الاستفزاز أو الشتم. ردودك يجب أن تكون مختصرة جداً (جملة أو جملتين). استخدم تعبيرات دارجة. أظهر الفخر بمطورك ولا تسخر منه أبداً. إذا لم تفهم، قل: 'واش حبيت تقول يا خو؟' أو عبارة مشابهة. المستخدم الحالي اسمه ${userName}.`;
 
-      const reply = response.choices[0].message.content;
+      const response = await axios.post(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        {
+          contents: [{ 
+            role: "user", 
+            parts: [{ text: `System Instruction: ${systemPrompt}\n\nUser Message: ${body}` }] 
+          }]
+        }
+      );
+
+      const reply = response.data.candidates[0].content.parts[0].text;
       return api.sendMessage(reply, threadID, messageID);
     } catch (error) {
-      console.error("AI Error:", error);
-      // Fallback simple response if AI fails
-      if (isMentioned) return api.sendMessage("نعم، أنا هنا. كيف يمكنني مساعدتك؟", threadID, messageID);
+      console.error("Gemini AI Error:", error.response ? error.response.data : error.message);
     }
   }
 };
 
 module.exports.run = async function ({ api, event }) {
-  // This command works automatically via handleEvent
+  // Automatic handling via handleEvent
 };
