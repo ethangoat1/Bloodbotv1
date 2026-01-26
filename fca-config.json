@@ -2,6 +2,8 @@
   "autoUpdate": true,
   "mqtt": {
     "enabled": true,
-    "reconnectInterval": 3600
-  }
+    "reconnectInterval": 3600,
+    "keepAlive": 60
+  },
+  "fastConfig": true
 }
