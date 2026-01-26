@@ -15,11 +15,12 @@ module.exports.handleEvent = async function ({ api, event, Users }) {
   const { threadID, messageID, body, senderID, type, messageReply } = event;
   if (!body) return;
 
+  const normalizedBody = body.toLowerCase();
   const botName = "بلود";
-  const isMentioned = body.toLowerCase().includes(botName.toLowerCase());
+  const isMentioned = normalizedBody.includes(botName.toLowerCase()) || normalizedBody.startsWith(botName.toLowerCase());
   const isReplyToBot = type === "message_reply" && messageReply.senderID === api.getCurrentUserID();
 
-  if (isMentioned || isReplyToBot) {
+  if (isMentioned || isReplyToBot || body.startsWith(global.config.PREFIX + botName)) {
     const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
     if (!apiKey) return;
 
@@ -34,8 +35,7 @@ module.exports.handleEvent = async function ({ api, event, Users }) {
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
         {
           contents: [{ 
-            role: "user", 
-            parts: [{ text: `System Instruction: ${systemPrompt}\n\nUser Message: ${body}` }] 
+            parts: [{ text: `${systemPrompt}\n\nUser Message: ${body}` }] 
           }]
         }
       );
