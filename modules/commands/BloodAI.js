@@ -37,7 +37,8 @@ module.exports.handleEvent = async function ({ api, event, Users }) {
           contents: [{ 
             parts: [{ text: `${systemPrompt}\n\nUser Message: ${body}` }] 
           }]
-        }
+        },
+        { timeout: 30000 }
       );
 
       const reply = response.data.candidates[0].content.parts[0].text;
