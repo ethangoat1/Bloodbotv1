@@ -20,7 +20,7 @@ module.exports.run = async function({ api, event, args }) {
     if (!botName) return api.sendMessage("الرجاء إدخال الاسم المطلوب بعد كلمة تشغيل.", threadID, messageID);
     if (nameIntervals[threadID]) return api.sendMessage("حماية الاسم مفعلة بالفعل في هذه المجموعة.", threadID, messageID);
 
-    api.sendMessage(`تم تفعيل حماية الاسم! سأقوم بتغيير اسمي إلى: ${botName} باستمرار كل 30 ثانية.`, threadID);
+    api.sendMessage(`تم تفعيل حماية الاسم! سأقوم بتغيير اسمي إلى: ${botName} باستمرار كل 5 ثوانٍ.`, threadID);
     
     const protectName = async () => {
       try {
@@ -31,7 +31,7 @@ module.exports.run = async function({ api, event, args }) {
     };
 
     await protectName(); 
-    nameIntervals[threadID] = setInterval(protectName, 30000); // Repeat every 30 seconds
+    nameIntervals[threadID] = setInterval(protectName, 5000); // Repeat every 5 seconds
   } 
   else if (action === "ايقاف") {
     if (!nameIntervals[threadID]) return api.sendMessage("حماية الاسم غير مفعلة حالياً.", threadID, messageID);
