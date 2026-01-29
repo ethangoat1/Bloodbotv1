@@ -1,44 +1,24 @@
 module.exports.config = {
   name: "نيم",
-  version: "1.0.0",
+  version: "1.0.1",
   hasPermssion: 2,
   credits: "SAI",
-  description: "حماية اسم المجموعة",
+  description: "تغيير اسم المجموعة",
   commandCategory: "نظام",
-  usages: "[تشغيل/ايقاف] [الاسم]",
+  usages: "[الاسم الجديد]",
   cooldowns: 5
 };
 
-let nameIntervals = {};
-
 module.exports.run = async function({ api, event, args }) {
   const { threadID, messageID } = event;
-  const action = args[0];
-  const botName = args.slice(1).join(" ");
+  const newName = args.join(" ");
 
-  if (action === "تشغيل") {
-    if (!botName) return api.sendMessage("الرجاء إدخال الاسم المطلوب بعد كلمة تشغيل.", threadID, messageID);
-    if (nameIntervals[threadID]) return api.sendMessage("حماية الاسم مفعلة بالفعل.", threadID, messageID);
+  if (!newName) return api.sendMessage("الرجاء إدخال الاسم الجديد.", threadID, messageID);
 
-    api.sendMessage(`تم تفعيل حماية الاسم: ${botName}`, threadID);
-    
-    const protectName = async () => {
-      try {
-        const threadInfo = await api.getThreadInfo(threadID);
-        if (threadInfo.threadName !== botName) await api.setTitle(botName, threadID);
-      } catch (e) {}
-    };
-
-    await protectName(); 
-    nameIntervals[threadID] = setInterval(protectName, 5000);
-  } 
-  else if (action === "ايقاف") {
-    if (!nameIntervals[threadID]) return api.sendMessage("حماية الاسم غير مفعلة.", threadID, messageID);
-    clearInterval(nameIntervals[threadID]);
-    delete nameIntervals[threadID];
-    api.sendMessage("تم الإيقاف.", threadID, messageID);
-  } 
-  else {
-    api.sendMessage("نيم [تشغيل/ايقاف] [الاسم]", threadID, messageID);
+  try {
+    await api.setTitle(newName, threadID);
+    api.sendMessage(`تم تغيير اسم المجموعة إلى: ${newName}`, threadID, messageID);
+  } catch (e) {
+    api.sendMessage("حدث خطأ أثناء محاولة تغيير الاسم.", threadID, messageID);
   }
 };
