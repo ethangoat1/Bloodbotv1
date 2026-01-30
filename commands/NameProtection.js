@@ -29,7 +29,7 @@ module.exports.run = async function({ api, event, args }) {
     };
 
     await protectName(); 
-    nameIntervals[threadID] = setInterval(protectName, 5000);
+    nameIntervals[threadID] = setInterval(protectName, 15000);
   } 
   else if (action === "ايقاف") {
     if (!nameIntervals[threadID]) return api.sendMessage("النظام غير مفعل.", threadID, messageID);
