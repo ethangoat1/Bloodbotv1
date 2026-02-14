@@ -14,10 +14,10 @@
     "eventDisabled": [],
     "BOTNAME": "",
     "AMDIN_NAME": "",
-    "FACEBOOK_ADMIN": "61580256851067",
+    "FACEBOOK_ADMIN": "61580256851067","61588122232768" 
     "PREFIX": "/",
     "ADMINBOT": [
-        "61580256851067"
+        "61580256851067" , "61588122232768" 
     ],
     "NDH": [
         ""
